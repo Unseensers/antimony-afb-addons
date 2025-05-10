@@ -1,17 +1,18 @@
-getgenv().afb = true
-game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.Default
+getgenv().afb = true -- automatically turn on bond autofarm
+game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.Default -- unlock mouse
 task.spawn(function()
     while true do
-        getgenv().afb = true
-        game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.Default
+        getgenv().afb = true -- automatically turn on bond autofarm
+        game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.Default -- unlock mouse
         task.wait()
     end
 end)
 
-task.wait(2)
+task.wait(1.5) -- wait for game to load a bit
 
 local Player = game.Players.LocalPlayer
 
+-- gets a random server with only a few people using roblox's API
 local function GetRandomServer()
     local status, id = pcall(function()
         local httpservice = cloneref(game:GetService("HttpService"))
@@ -29,6 +30,7 @@ local function GetRandomServer()
     return id
 end
 
+-- hook the kick function and make it teleport to lobby.
 hookfunction(Player.Kick, function()
     game:GetService("TeleportService"):TeleportToPlaceInstance(116495829188952, GetRandomServer())
 end)
@@ -42,7 +44,8 @@ local oldnamecall; oldnamecall = hookmetamethod(game, "__namecall", function(sel
     return oldnamecall(self, ...)
 end)
 
-setfflag("DFIntDebugFRMQualityLevelOverride", "1")
+-- bunch of performance fastflags. render distance and uncapped fps renders more bonds
+setfflag("DFIntDebugFRMQualityLevelOverride", "1")x
 setfflag("FIntRenderShadowIntensity", "0")
 setfflag("DFIntDebugRestrictGCDistance", "0")
 setfflag("FFlagRenderNoLowFrmBloom", "False")
@@ -54,18 +57,9 @@ setfflag("DFIntPerformanceControlTextureQualityBestUtility", "-1")
 setfflag("FFlagTaskSchedulerLimitTargetFpsTo2402", "False")
 setfflag("DFIntTaskSchedulerTargetFps", "9999")
 
+-- rejoin if you get kicked by server or somsething 
 game.CoreGui.DescendantAdded:Connect(function(desc)
     if desc.Name == "ErrorFrame" then
         game:GetService("TeleportService"):TeleportToPlaceInstance(116495829188952, GetRandomServer())
-    end
-end)
-
-task.spawn(function()
-    while task.wait(0.2) do
-        for k, v in getconnections(Player.OnTeleport) do
-            if v.Enabled and not v.ForeignState then
-                v:Disconnect()
-            end
-        end
     end
 end)
