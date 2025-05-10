@@ -8,7 +8,7 @@ task.spawn(function()
     end
 end)
 
-task.wait(3)
+task.wait(2)
 
 local Player = game.Players.LocalPlayer
 
@@ -60,10 +60,12 @@ game.CoreGui.DescendantAdded:Connect(function(desc)
     end
 end)
 
-while task.wait(0.2) do
-    for k, v in getconnections(Player.OnTeleport) do
-        if v.Enabled and not v.ForeignState then
-            v:Disconnect()
+task.spawn(function()
+    while task.wait(0.2) do
+        for k, v in getconnections(Player.OnTeleport) do
+            if v.Enabled and not v.ForeignState then
+                v:Disconnect()
+            end
         end
     end
-end
+end)
