@@ -8,6 +8,13 @@ task.spawn(function()
     end
 end)
 
+-- rejoin if you get kicked by server
+game.CoreGui.DescendantAdded:Connect(function(desc)
+    if desc.Name == "ErrorFrame" then
+        game:GetService("TeleportService"):TeleportToPlaceInstance(116495829188952, GetRandomServer())
+    end
+end)
+
 task.wait(1.5) -- wait for game to load a bit
 
 local Player = game.Players.LocalPlayer
@@ -57,9 +64,3 @@ setfflag("DFIntPerformanceControlTextureQualityBestUtility", "-1")
 setfflag("FFlagTaskSchedulerLimitTargetFpsTo2402", "False")
 setfflag("DFIntTaskSchedulerTargetFps", "120")
 
--- rejoin if you get kicked by server
-game.CoreGui.DescendantAdded:Connect(function(desc)
-    if desc.Name == "ErrorFrame" then
-        game:GetService("TeleportService"):TeleportToPlaceInstance(116495829188952, GetRandomServer())
-    end
-end)
